@@ -1,11 +1,5 @@
-import React from 'react'
+import { redirect } from "next/navigation";
 
-const layout = () => {
-  return (
-    <div>
-      <h1>asc</h1>
-    </div>
-  )
+export default function Home() {
+  redirect("/dashboard");
 }
-
-export default layout
