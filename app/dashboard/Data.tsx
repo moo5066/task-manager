@@ -93,7 +93,28 @@ total:1,
   },
 ]
 
+export const dashboardList = [
+{ 
+  name:"Dashboard",
+   icon:"dashboard" ,
+   href:"/dashboard"
+  },
 
+ { 
+  name:"Tasks", 
+  icon:"tasks",
+   href:"/dashboard/tasks"
+  },
+
+ { name:"Categories",
+   icon:"categories",
+   href:"/dashboard/categories"
+  },
+{ name:"Settings",
+   icon:"settings",
+   href:"/dashboard/settings"
+  },
+]
 
 
 

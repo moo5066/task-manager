@@ -8,10 +8,10 @@ const Page = () => {
 
 
 const icons: Record<string, React.ReactNode> = {
-  tasks: <FaTasks />,
-  check: <CiCircleCheck />,
-  time: <WiTime10 />,
-  danger: <CgDanger />,
+  tasks: <FaTasks size={20}/>,
+  check: <CiCircleCheck size={20}/>,
+  time: <WiTime10 size={20}/>,
+  danger: <CgDanger size={20}/>,
 }
 const colors: Record<string, string> = {
   blue: "bg-blue-500",
