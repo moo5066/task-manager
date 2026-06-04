@@ -33,7 +33,7 @@ const statusColors: Record<string, string> = {
 
 
   return (
-    <div className='m-10'>
+    <div className='m-10 '>
       <h1 className="text-3xl font-bold ">Dashboard</h1>
       <p className="text-gray-500">Welcome back! Here's an overview of your tasks.</p>
 
