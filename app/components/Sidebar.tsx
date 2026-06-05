@@ -53,8 +53,7 @@ const icons: Record<string, React.ReactNode> = {
 
 
 <div className="lg:hidden">
-  <p onClick={handleIsOpen}><CiMenuBurger size={25} />
-  </p>
+  <p onClick={handleIsOpen} className=""><CiMenuBurger size={25} /></p>
   {isOpen &&(
     <div className="mt-10">
 <div className="mx-auto">

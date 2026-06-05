@@ -5,6 +5,30 @@ import {priorities,statuses,categories} from "./Tasks"
 const Page = () => {
 
 const [isOpen , setIsOpen]=useState(false)
+const [tasks , setTasks]=useState<{ title: string;discription:string;priority:string;status:string }[]>([])
+const [title ,setTitle]=useState("")
+const [discription ,setDescription]=useState("")
+const [priority,setPriority]=useState("low")
+const [status ,setStatus]=useState("To Do")
+
+function AddTask(){
+  const newTask={
+    title:title
+  };
+  setTasks([...tasks , {
+    
+    title:title,
+    discription:discription,
+  priority:priority,
+  status:status
+  
+  }])
+  setTitle("")
+  setDescription("")
+  
+}
+
+
 
 
 
@@ -45,10 +69,15 @@ x
 
 <div>
   <p>Title</p>
-  <input type="text" placeholder='Enter task title' className='outline-0 w-full border border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
-
+<input
+  type="text"
+  placeholder="Enter task title"
+  value={title}
+  onChange={(e) => setTitle(e.target.value)}
+  className="outline-0 w-full border border-gray-300 p-2 rounded-lg"
+/>
 <p>Description</p>
-<textarea placeholder='Enter task description' className='outline-0 border w-full border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
+<textarea placeholder='Enter task description' onChange={(e)=>setDescription(e.target.value)} className='outline-0 border w-full border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
 
 </div>
 
@@ -57,14 +86,17 @@ x
 
 <div className='mt-10 grid grid-cols-2 gap-4'>
   <div>
-    {priorities.map((priority,index)=>(
+    {priorities.map((item,index)=>(
       <div key={index}>
-        <p>{priority.title}</p>
-  <select className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
+        <p>{item.title}</p>
+  <select
+  value={priority}
+  onChange={(e)=>setPriority(e.target.value)}
+  className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
 
-<option value='low'>{priority.low}</option>
-<option value='medium'>{priority.medium}</option>
-<option value='high'>{priority.high}</option>
+<option value='low'>{item.low}</option>
+<option value='medium'>{item.medium}</option>
+<option value='high'>{item.high}</option>
   </select>
 
       </div>
@@ -72,13 +104,16 @@ x
   </div>
 
   <div>
-    {statuses.map((status,index)=>(
+    {statuses.map((map,index)=>(
       <div key={index}>
-<p>{status.title}</p>
-  <select className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
-<option value="low">{status.low}</option>
-<option value="medium">{status.medium}</option>
-<option value="high">{status.high}</option>
+<p>{map.title}</p>
+  <select 
+  value={status}
+  onChange={(e)=>setStatus(e.target.value)}
+  className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
+<option value="low">{map.low}</option>
+<option value="medium">{map.medium}</option>
+<option value="high">{map.high}</option>
   </select>
 
       </div>
@@ -111,10 +146,20 @@ x
 
 <div className='flex flex-col  mt-10 gap-2'>
   <button onClick={()=>setIsOpen(false)} className='border border-gray-300 p-2 font-semibold  rounded-lg'>Cancel</button>
-  <button className='bg-blue-500 p-2 font-semibold rounded-lg text-white'>Add Task</button>
+  <button onClick={AddTask} className='bg-blue-500 p-2 font-semibold rounded-lg text-white'>Add Task</button>
 </div>
 
+{tasks.map((task,index)=>(
+    <div key={index}>
+      <p>{task.title}</p>
+    <p>{task.discription}</p>
+    <p>{task.priority}</p>
+     <p>{task.status}</p>
+    {/* <p>{task.category}</p>
+    <p>{task.dueDate}</p> */} 
 
+    </div>
+))}
 
 
 
