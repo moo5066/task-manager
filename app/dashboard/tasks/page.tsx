@@ -1,6 +1,6 @@
 'use client'
 import  { useState,useEffect } from 'react'
-import {priorities,statuses,categories,Review} from "./Tasks"
+import {priorities,statuses,categories,Review,Review2,Review3,Review4,Review5,menu} from "./Tasks"
 import { CiMenuKebab } from "react-icons/ci";
 
 const Page = () => {
@@ -47,7 +47,10 @@ function deleteTask(indexToDelete:number){
 
 
 
-
+const Icon:Record<string, React.ReactNode> =
+  {
+  menu:<CiMenuKebab size={20}/>
+}
 
 
 
@@ -56,12 +59,12 @@ function deleteTask(indexToDelete:number){
 
   return (
     <div>
-    <div className='flex justify-between items-center'>
+    <div className='flex flex-row justify-between items-center w-full'>
 <div>
   <h1 className='text-3xl font-bold'>Tasks</h1>
   <p className='text-gray-400'>Manage and organize your tasks.</p>
 </div>
-
+<div>
 <button
 onClick={()=>setIsOpen(true)}
  className='flex flex-row gap-2 bg-blue-500 text-white p-2 rounded-lg font-bold'>
@@ -207,22 +210,80 @@ Delete
 </div>
 )}
 
+    </div>
+    </div>
+<div className='flex flex-col gap-10 mt-20'>
 <div>
   {Review.map((rev,index)=>(
-    <div key={index}>
-
+    <div key={index} className='flex justify-between items-center'>
+      <div>
+<p>{rev.line}</p>
+<p>{rev.status}</p>
+<p>{rev.description}</p>
+ </div>
+<div>
+<p>{Icon[rev.Icon]}</p>
+    </div>
     </div>
   ))}
 </div>
-
-
-
-
-
-
-
-
+<div>
+  {Review2.map((rev,index)=>(
+    <div key={index} className='flex justify-between items-center'>
+      <div>
+<p>{rev.line}</p>
+<p>{rev.status}</p>
+<p>{rev.description}</p>
+ </div>
+<div>
+<p>{Icon[rev.Icon]}</p>
     </div>
+    </div>
+  ))}
+</div>
+<div>
+  {Review3.map((rev,index)=>(
+    <div key={index} className='flex justify-between items-center'>
+      <div>
+<p>{rev.line}</p>
+<p>{rev.status}</p>
+<p>{rev.description}</p>
+ </div>
+<div>
+<p>{Icon[rev.Icon]}</p>
+    </div>
+    </div>
+  ))}
+</div>
+<div>
+  {Review4.map((rev,index)=>(
+     <div key={index} className='flex justify-between items-center'>
+      <div>
+<p>{rev.line}</p>
+<p>{rev.status}</p>
+<p>{rev.description}</p>
+ </div>
+<div>
+<p>{Icon[rev.Icon]}</p>
+    </div>
+    </div>
+  ))}
+</div>
+<div>
+  {Review5.map((rev,index)=>(
+    <div key={index} className='flex justify-between items-center'>
+      <div>
+<p>{rev.line}</p>
+<p>{rev.status}</p>
+<p>{rev.description}</p>
+</div>
+<div>
+<p>{Icon[rev.Icon]}</p>
+    </div>
+    </div>
+  ))}
+</div>
+</div>
 
 
     </div>

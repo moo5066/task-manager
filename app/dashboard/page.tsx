@@ -75,7 +75,7 @@ const statusColors: Record<string, string> = {
 </div>
 
 
-<div className="mt-10 bg-white p-5 shadow-md rounded-lg lg:w-[50%] lg:h-[300px]">
+<div className="mt-10 bg-white p-5 shadow-md rounded-lg lg:w-[50%] ">
   <h1>Progress by Category</h1>
   <div className="mt-5 flex flex-col gap-5">
 {categories.map((category, index) => (
