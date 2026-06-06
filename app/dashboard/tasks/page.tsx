@@ -1,16 +1,18 @@
 'use client'
-import  { useState } from 'react'
-import {priorities,statuses,categories} from "./Tasks"
+import  { useState,useEffect } from 'react'
+import {priorities,statuses,categories,Review} from "./Tasks"
+import { CiMenuKebab } from "react-icons/ci";
 
 const Page = () => {
 
 const [isOpen , setIsOpen]=useState(false)
-const [tasks , setTasks]=useState<{ title: string;discription:string;priority:string;status:string }[]>([])
+const [tasks , setTasks]=useState<{ title: string;discription:string;priority:string;status:string;category:string;dueDate:string }[]>([])
 const [title ,setTitle]=useState("")
 const [discription ,setDescription]=useState("")
 const [priority,setPriority]=useState("low")
 const [status ,setStatus]=useState("To Do")
-
+const [category ,setCategory]=useState("Work")
+const [dueDate ,setDueDate]=useState("")
 function AddTask(){
   const newTask={
     title:title
@@ -20,13 +22,33 @@ function AddTask(){
     title:title,
     discription:discription,
   priority:priority,
-  status:status
+  status:status,
+  category:category,
+  dueDate:dueDate
+
   
   }])
   setTitle("")
   setDescription("")
+  setPriority("low")
+  setStatus("To Do")
+  setCategory("Work")
+  setDueDate("")
+  setIsOpen(false)
   
 }
+
+
+function deleteTask(indexToDelete:number){
+  setTasks(
+    tasks.filter((_,index)=>index!==indexToDelete)
+  )
+}
+
+
+
+
+
 
 
 
@@ -124,15 +146,18 @@ x
 
   <div>
 
-{categories.map((category,index)=>(
+{categories.map((mo,index)=>(
   <div key={index}>
-<p>{category.title}</p>
-  <select className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
-    <option value="low">{category.Work}</option>
-    <option value="medium">{category.Personal}</option>
-    <option value="medium1">{category.Health}</option>
-    <option value="high">{category.Finance}</option>
-    <option value="Urgent">{category.Urgent}</option>
+<p>{mo.title}</p>
+  <select 
+  value={category}
+  onChange={(e)=>setCategory(e.target.value)}
+  className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'>
+    <option value="low">{mo.Work}</option>
+    <option value="medium">{mo.Personal}</option>
+    <option value="medium1">{mo.Health}</option>
+    <option value="high">{mo.Finance}</option>
+    <option value="Urgent">{mo.Urgent}</option>
 </select>
   </div>
 ))}
@@ -140,7 +165,10 @@ x
 
   <div>
   <p>Due Date</p>
-  <input type="date" className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
+  <input
+  value={dueDate}
+  onChange={(e)=>setDueDate(e.target.value)}
+  type="date" className='outline-0 border border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
   </div>
 </div>
 
@@ -150,22 +178,48 @@ x
 </div>
 
 {tasks.map((task,index)=>(
-    <div key={index}>
-      <p>{task.title}</p>
-    <p>{task.discription}</p>
-    <p>{task.priority}</p>
-     <p>{task.status}</p>
-    {/* <p>{task.category}</p>
-    <p>{task.dueDate}</p> */} 
+    <div key={index} className='bg-white p-4 rounded-lg shadow-md border border-gray-100 mt-3'>
+      <p className='font-bold'>{task.title}</p>
+    <p className='text-gray-500 text-sm'>{task.discription}</p>
+
+    <div className='flex flex-row gap-2 mt-3'>
+    <p  className='bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full'>{task.priority}</p>
+     <p className='bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full'>{task.status}</p>
+     <p className='bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full'>{task.category}</p>
+     <p className='bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full'>{task.dueDate}</p>
+
+
+<button onClick={()=>deleteTask(index)}>
+Delete
+</button>
 
     </div>
-))}
+    </div>
 
+
+
+
+
+))}
 
 
 </div>
 </div>
 )}
+
+<div>
+  {Review.map((rev,index)=>(
+    <div key={index}>
+
+    </div>
+  ))}
+</div>
+
+
+
+
+
+
 
 
     </div>
