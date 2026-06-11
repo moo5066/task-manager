@@ -1,8 +1,8 @@
 'use client'
 import  { useState,useEffect } from 'react'
 import {priorities,statuses,categories,Review,Review2,Review3,Review4,Review5,menu} from "./Tasks"
-import { CiMenuKebab } from "react-icons/ci";
-
+import { CiMenuKebab,CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 const Page = () => {
 
 const [isOpen , setIsOpen]=useState(false)
@@ -13,6 +13,9 @@ const [priority,setPriority]=useState("low")
 const [status ,setStatus]=useState("To Do")
 const [category ,setCategory]=useState("Work")
 const [dueDate ,setDueDate]=useState("")
+// Replace: const [opnMenu, setOpenMenu] = useState<number | null>(null)
+// With this:
+const [opnMenu, setOpenMenu] = useState<{ section: string; index: number } | null>(null);
 function AddTask(){
   const newTask={
     title:title
@@ -216,14 +219,30 @@ Delete
 <div>
   {Review.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
-      <div>
-<p>{rev.line}</p>
-<p>{rev.status}</p>
-<p>{rev.description}</p>
- </div>
-<div>
-<p>{Icon[rev.Icon]}</p>
+     <div>
+<p className='text-lg font-semibold'>{rev.line}</p>
+<p className='text-gray-500'>{rev.description}</p>
+<p className='mt-2 text-red-600'>{rev.date}<span>(Overdue)</span></p>
+</div>
+<div className="relative">
+  <button 
+    onClick={() => setOpenMenu(opnMenu?.section === 'Review' && opnMenu?.index === index ? null : { section: 'Review', index })} 
+    className="p-1 hover:bg-gray-100 rounded-full"
+  >
+    {Icon[rev.Icon]}
+  </button>
+
+  {opnMenu?.section === 'Review' && opnMenu?.index === index && (
+    <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+        <CiEdit /> Edit
+      </button>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+        <MdDelete /> Delete
+      </button>
     </div>
+  )}
+</div>
     </div>
   ))}
 </div>
@@ -231,41 +250,94 @@ Delete
   {Review2.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
       <div>
-<p>{rev.line}</p>
-<p>{rev.status}</p>
-<p>{rev.description}</p>
- </div>
-<div>
-<p>{Icon[rev.Icon]}</p>
+<p className='text-lg font-semibold'>{rev.line}</p>
+<p className='text-gray-500'>{rev.description}</p>
+<p className='mt-2 text-red-600'>{rev.date}<span>(Overdue)</span></p>
+</div>
+<div className="relative">
+  <button 
+    onClick={() => setOpenMenu(opnMenu?.section === 'review2' && opnMenu?.index === index ? null : { section: 'review2', index })} 
+    className="p-1 hover:bg-gray-100 rounded-full"
+  >
+    {Icon[rev.Icon]}
+  </button>
+
+  {opnMenu?.section === 'review2' && opnMenu?.index === index && (
+    <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+        <CiEdit /> Edit
+      </button>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+        <MdDelete /> Delete
+      </button>
     </div>
+  )}
+</div>
     </div>
   ))}
 </div>
 <div>
+
+
+
   {Review3.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
-      <div>
-<p>{rev.line}</p>
-<p>{rev.status}</p>
-<p>{rev.description}</p>
- </div>
-<div>
-<p>{Icon[rev.Icon]}</p>
+     <div>
+<p className='text-lg font-semibold'>{rev.line}</p>
+<p className='text-gray-500'>{rev.description}</p>
+<p className='mt-2 text-red-600'>{rev.date}<span>(Overdue)</span></p>
+</div>
+<div className="relative">
+  <button 
+    onClick={() => setOpenMenu(opnMenu?.section === 'review3' && opnMenu?.index === index ? null : { section: 'review3', index })} 
+    className="p-1 hover:bg-gray-100 rounded-full"
+  >
+    {Icon[rev.Icon]}
+  </button>
+
+  {opnMenu?.section === 'review3' && opnMenu?.index === index && (
+    <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+        <CiEdit /> Edit
+      </button>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+        <MdDelete /> Delete
+      </button>
     </div>
+  )}
+</div>
     </div>
   ))}
 </div>
 <div>
   {Review4.map((rev,index)=>(
      <div key={index} className='flex justify-between items-center'>
-      <div>
-<p>{rev.line}</p>
-<p>{rev.status}</p>
-<p>{rev.description}</p>
- </div>
-<div>
-<p>{Icon[rev.Icon]}</p>
+     <div>
+<p className='text-lg font-semibold'>{rev.line}</p>
+<p className='text-gray-500'>{rev.description}</p>
+<p className='mt-2 text-red-600'>{rev.date}<span>(Overdue)</span></p>
+</div>
+
+<div className="relative">
+  <button 
+    onClick={() => setOpenMenu(opnMenu?.section === 'review4' && opnMenu?.index === index ? null : { section: 'review4', index })} 
+    className="p-1 hover:bg-gray-100 rounded-full"
+  >
+    {Icon[rev.Icon]}
+  </button>
+
+  {opnMenu?.section === 'review4' && opnMenu?.index === index && (
+    <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+        <CiEdit /> Edit
+      </button>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+        <MdDelete /> Delete
+      </button>
     </div>
+  )}
+</div>
+
     </div>
   ))}
 </div>
@@ -273,13 +345,31 @@ Delete
   {Review5.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
       <div>
-<p>{rev.line}</p>
-<p>{rev.status}</p>
-<p>{rev.description}</p>
+<p className='text-lg font-semibold'>{rev.line}</p>
+<p className='text-gray-500'>{rev.description}</p>
+<p className='mt-2 text-red-600'>{rev.date}<span>(Overdue)</span></p>
 </div>
-<div>
-<p>{Icon[rev.Icon]}</p>
+
+<div className="relative">
+  <button 
+    onClick={() => setOpenMenu(opnMenu?.section === 'review5' && opnMenu?.index === index ? null : { section: 'review5', index })} 
+    className="p-1 hover:bg-gray-100 rounded-full"
+  >
+    {Icon[rev.Icon]}
+  </button>
+
+  {opnMenu?.section === 'review5' && opnMenu?.index === index && (
+    <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+        <CiEdit /> Edit
+      </button>
+      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+        <MdDelete /> Delete
+      </button>
     </div>
+  )}
+</div>
+
     </div>
   ))}
 </div>
