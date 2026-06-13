@@ -1,6 +1,6 @@
 'use client'
-import  { useState,useEffect } from 'react'
-import {priorities,statuses,categories,Review,Review2,Review3,Review4,Review5,menu} from "./Tasks"
+import  { useState } from 'react'
+import {priorities,statuses,categories,Review,Review2,Review3,Review4,Review5} from "./Tasks"
 import { CiMenuKebab,CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 const Page = () => {
@@ -13,13 +13,30 @@ const [priority,setPriority]=useState("low")
 const [status ,setStatus]=useState("To Do")
 const [category ,setCategory]=useState("Work")
 const [dueDate ,setDueDate]=useState("")
-// Replace: const [opnMenu, setOpenMenu] = useState<number | null>(null)
-// With this:
+
+type ReviewItem = {line:string;status:string;description:string;date:string;Icon:string}
+type ReviewSection = "Review" | "Review2" | "Review3" | "Review4" | "Review5"
+
+const [reviewList,setReviewList]=useState<ReviewItem[]>(Review || [])
+const [review2List,setReview2List]=useState<ReviewItem[]>(Review2 || [])
+const [review3List,setReview3List]=useState<ReviewItem[]>(Review3 || [])
+const [review4List,setReview4List]=useState<ReviewItem[]>(Review4 || [])
+const [review5List,setReview5List]=useState<ReviewItem[]>(Review5 || [])
+
 const [opnMenu, setOpenMenu] = useState<{ section: string; index: number } | null>(null);
+const [editingReview, setEditingReview] = useState<{ section: ReviewSection; index: number } | null>(null);
+
+function resetForm() {
+  setTitle("")
+  setDescription("")
+  setPriority("low")
+  setStatus("To Do")
+  setCategory("Work")
+  setDueDate("")
+  setEditingReview(null)
+}
+
 function AddTask(){
-  const newTask={
-    title:title
-  };
   setTasks([...tasks , {
     
     title:title,
@@ -31,12 +48,7 @@ function AddTask(){
 
   
   }])
-  setTitle("")
-  setDescription("")
-  setPriority("low")
-  setStatus("To Do")
-  setCategory("Work")
-  setDueDate("")
+  resetForm()
   setIsOpen(false)
   
 }
@@ -47,6 +59,82 @@ function deleteTask(indexToDelete:number){
     tasks.filter((_,index)=>index!==indexToDelete)
   )
 }
+
+function deleteRevieewItem (section:ReviewSection,indexDelete:number){
+if(section==='Review')setReviewList(reviewList.filter((_,i)=>i!==indexDelete))
+  if(section==='Review2')setReview2List(review2List.filter((_,i)=>i!==indexDelete))
+    if(section==='Review3')setReview3List(review3List.filter((_,i)=>i!==indexDelete))
+      if(section==='Review4')setReview4List(review4List.filter((_,i)=>i!==indexDelete))
+        if(section==='Review5')setReview5List(review5List.filter((_,i)=>i!==indexDelete))
+      setOpenMenu(null)
+}
+
+
+
+function editReview(section: ReviewSection, index: number) {
+  const updateItem: Partial<ReviewItem> = {
+    Icon: "menu",
+  };
+
+  if (title.trim()) updateItem.line = title.trim();
+  if (discription.trim()) updateItem.description = discription.trim();
+  if (status) updateItem.status = status;
+  if (dueDate) updateItem.date = dueDate;
+
+  if (section === "Review") {
+    const u = [...reviewList];
+    u[index] = { ...u[index], ...updateItem };
+    setReviewList(u);
+  }
+
+  if (section === "Review2") {
+    const u = [...review2List];
+    u[index] = { ...u[index], ...updateItem };
+    setReview2List(u);
+  }
+
+  if (section === "Review3") {
+    const u = [...review3List];
+    u[index] = { ...u[index], ...updateItem };
+    setReview3List(u);
+  }
+
+  if (section === "Review4") {
+    const u = [...review4List];
+    u[index] = { ...u[index], ...updateItem };
+    setReview4List(u);
+  }
+
+  if (section === "Review5") {
+    const u = [...review5List];
+    u[index] = { ...u[index], ...updateItem };
+    setReview5List(u);
+  }
+
+  setOpenMenu(null);
+  resetForm();
+  setIsOpen(false);
+}
+
+function startEditReview(section: ReviewSection, index: number, review: ReviewItem) {
+  setTitle(review.line)
+  setDescription(review.description)
+  setStatus(review.status)
+  setDueDate(/^\d{4}-\d{2}-\d{2}$/.test(review.date) ? review.date : "")
+  setEditingReview({ section, index })
+  setOpenMenu(null)
+  setIsOpen(true)
+}
+
+function handleSubmitTask() {
+  if (editingReview) {
+    editReview(editingReview.section, editingReview.index)
+    return
+  }
+
+  AddTask()
+}
+
 
 
 
@@ -69,7 +157,10 @@ const Icon:Record<string, React.ReactNode> =
 </div>
 <div>
 <button
-onClick={()=>setIsOpen(true)}
+onClick={()=>{
+  resetForm()
+  setIsOpen(true)
+}}
  className='flex flex-row gap-2 bg-blue-500 text-white p-2 rounded-lg font-bold'>
 <span>+</span>
 <p>Add Task</p>
@@ -81,7 +172,10 @@ onClick={()=>setIsOpen(true)}
 <div className='fixed inset-0 flex justify-center bg-black/50  items-center z-50 '>
 <div className='bg-white w-full max-w-md rounded-2xl shadow-lg p-6 relative'>
 
-<button onClick={()=>setIsOpen(false)}
+<button onClick={()=>{
+  resetForm()
+  setIsOpen(false)
+}}
   className='absolute top-4 right-4 text-gray-500 hover:text-black'
   >
 x
@@ -90,8 +184,8 @@ x
 
 <div>
   <div className='flex flex-col justify-center items-center'>
-  <h1 className='font-bold text-xl'>Add New Task</h1>
-  <p className='text-gray-500'>Create a new task to add to your list.</p>
+  <h1 className='font-bold text-xl'>{editingReview ? "Edit Task" : "Add New Task"}</h1>
+  <p className='text-gray-500'>{editingReview ? "Update the selected task." : "Create a new task to add to your list."}</p>
 </div>
 
 
@@ -105,7 +199,7 @@ x
   className="outline-0 w-full border border-gray-300 p-2 rounded-lg"
 />
 <p>Description</p>
-<textarea placeholder='Enter task description' onChange={(e)=>setDescription(e.target.value)} className='outline-0 border w-full border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
+<textarea placeholder='Enter task description' value={discription} onChange={(e)=>setDescription(e.target.value)} className='outline-0 border w-full border-gray-300 p-2 rounded-lg hover:border-blue-500'/>
 
 </div>
 
@@ -179,8 +273,13 @@ x
 </div>
 
 <div className='flex flex-col  mt-10 gap-2'>
-  <button onClick={()=>setIsOpen(false)} className='border border-gray-300 p-2 font-semibold  rounded-lg'>Cancel</button>
-  <button onClick={AddTask} className='bg-blue-500 p-2 font-semibold rounded-lg text-white'>Add Task</button>
+  <button onClick={()=>{
+    resetForm()
+    setIsOpen(false)
+  }} className='border border-gray-300 p-2 font-semibold  rounded-lg'>Cancel</button>
+  <button onClick={handleSubmitTask} className='bg-blue-500 p-2 font-semibold rounded-lg text-white'>
+    {editingReview ? "Save Changes" : "Add Task"}
+  </button>
 </div>
 
 {tasks.map((task,index)=>(
@@ -217,7 +316,7 @@ Delete
     </div>
 <div className='flex flex-col gap-10 mt-20'>
 <div>
-  {Review.map((rev,index)=>(
+  {reviewList.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
      <div>
 <p className='text-lg font-semibold'>{rev.line}</p>
@@ -234,10 +333,14 @@ Delete
 
   {opnMenu?.section === 'Review' && opnMenu?.index === index && (
     <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+      <button 
+      onClick={()=>startEditReview('Review',index,rev)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
         <CiEdit /> Edit
       </button>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+      <button 
+      onClick={()=>deleteRevieewItem('Review',index)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
         <MdDelete /> Delete
       </button>
     </div>
@@ -247,7 +350,7 @@ Delete
   ))}
 </div>
 <div>
-  {Review2.map((rev,index)=>(
+  {review2List.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
       <div>
 <p className='text-lg font-semibold'>{rev.line}</p>
@@ -256,18 +359,22 @@ Delete
 </div>
 <div className="relative">
   <button 
-    onClick={() => setOpenMenu(opnMenu?.section === 'review2' && opnMenu?.index === index ? null : { section: 'review2', index })} 
+    onClick={() => setOpenMenu(opnMenu?.section === 'Review2' && opnMenu?.index === index ? null : { section: 'Review2', index })} 
     className="p-1 hover:bg-gray-100 rounded-full"
   >
     {Icon[rev.Icon]}
   </button>
 
-  {opnMenu?.section === 'review2' && opnMenu?.index === index && (
+  {opnMenu?.section === 'Review2' && opnMenu?.index === index && (
     <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+      <button 
+      onClick={()=>startEditReview('Review2',index,rev)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
         <CiEdit /> Edit
       </button>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+      <button 
+      onClick={()=>deleteRevieewItem('Review2',index)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
         <MdDelete /> Delete
       </button>
     </div>
@@ -280,7 +387,7 @@ Delete
 
 
 
-  {Review3.map((rev,index)=>(
+  {review3List.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
      <div>
 <p className='text-lg font-semibold'>{rev.line}</p>
@@ -289,18 +396,22 @@ Delete
 </div>
 <div className="relative">
   <button 
-    onClick={() => setOpenMenu(opnMenu?.section === 'review3' && opnMenu?.index === index ? null : { section: 'review3', index })} 
+    onClick={() => setOpenMenu(opnMenu?.section === 'Review3' && opnMenu?.index === index ? null : { section: 'Review3', index })} 
     className="p-1 hover:bg-gray-100 rounded-full"
   >
     {Icon[rev.Icon]}
   </button>
 
-  {opnMenu?.section === 'review3' && opnMenu?.index === index && (
+  {opnMenu?.section === 'Review3' && opnMenu?.index === index && (
     <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+      <button 
+            onClick={()=>startEditReview('Review3',index,rev)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
         <CiEdit /> Edit
       </button>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+      <button 
+      onClick={()=>deleteRevieewItem('Review3',index)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
         <MdDelete /> Delete
       </button>
     </div>
@@ -310,7 +421,7 @@ Delete
   ))}
 </div>
 <div>
-  {Review4.map((rev,index)=>(
+  {review4List.map((rev,index)=>(
      <div key={index} className='flex justify-between items-center'>
      <div>
 <p className='text-lg font-semibold'>{rev.line}</p>
@@ -320,18 +431,22 @@ Delete
 
 <div className="relative">
   <button 
-    onClick={() => setOpenMenu(opnMenu?.section === 'review4' && opnMenu?.index === index ? null : { section: 'review4', index })} 
+    onClick={() => setOpenMenu(opnMenu?.section === 'Review4' && opnMenu?.index === index ? null : { section: 'Review4', index })} 
     className="p-1 hover:bg-gray-100 rounded-full"
   >
     {Icon[rev.Icon]}
   </button>
 
-  {opnMenu?.section === 'review4' && opnMenu?.index === index && (
+  {opnMenu?.section === 'Review4' && opnMenu?.index === index && (
     <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+      <button 
+            onClick={()=>startEditReview('Review4',index,rev)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
         <CiEdit /> Edit
       </button>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+      <button 
+      onClick={()=>deleteRevieewItem('Review4',index)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
         <MdDelete /> Delete
       </button>
     </div>
@@ -342,7 +457,7 @@ Delete
   ))}
 </div>
 <div>
-  {Review5.map((rev,index)=>(
+  {review5List.map((rev,index)=>(
     <div key={index} className='flex justify-between items-center'>
       <div>
 <p className='text-lg font-semibold'>{rev.line}</p>
@@ -352,18 +467,23 @@ Delete
 
 <div className="relative">
   <button 
-    onClick={() => setOpenMenu(opnMenu?.section === 'review5' && opnMenu?.index === index ? null : { section: 'review5', index })} 
+  
+    onClick={() => setOpenMenu(opnMenu?.section === 'Review5' && opnMenu?.index === index ? null : { section: 'Review5', index })} 
     className="p-1 hover:bg-gray-100 rounded-full"
   >
     {Icon[rev.Icon]}
   </button>
 
-  {opnMenu?.section === 'review5' && opnMenu?.index === index && (
+  {opnMenu?.section === 'Review5' && opnMenu?.index === index && (
     <div className='absolute right-0 top-8 z-50 w-28 bg-white border rounded-lg shadow-lg py-1'>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
+      <button 
+            onClick={()=>startEditReview('Review5',index,rev)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm'>
         <CiEdit /> Edit
       </button>
-      <button className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
+      <button 
+      onClick={()=>deleteRevieewItem('Review5',index)}
+      className='flex items-center gap-2 p-2 w-full hover:bg-gray-50 text-sm text-red-600'>
         <MdDelete /> Delete
       </button>
     </div>

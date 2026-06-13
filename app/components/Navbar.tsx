@@ -2,8 +2,6 @@
 'use client'
 
 import { CiSearch } from "react-icons/ci";
-import { IoMdMoon } from "react-icons/io";
-import { MdSunny } from "react-icons/md";
 import { FaBell } from "react-icons/fa";
 import Image from 'next/image';
 // import { useTheme } from "next-themes";
@@ -39,7 +37,7 @@ const Navbar = () => {
             3
           </span>
         </div>
-<Image src="/Mo.png" width={50} height={50} alt="profile" className='rounded-full'/>
+<Image src="/Mo.png" width={50} height={50} alt="profile" className='h-auto rounded-full'/>
       {/* <Image src='/midical care Background Removed.png' alt='logo' width={70} height={70} /> */}
 
 </div>
