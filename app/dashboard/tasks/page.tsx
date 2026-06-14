@@ -149,7 +149,7 @@ const Icon:Record<string, React.ReactNode> =
 
 
   return (
-    <div>
+    <div className='m-5'>
     <div className='flex flex-row justify-between items-center w-full'>
 <div>
   <h1 className='text-3xl font-bold'>Tasks</h1>

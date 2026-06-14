@@ -17,7 +17,7 @@ const colors : Record<string, string> = {
 
 const page = () => {
   return (
-    <div>
+    <div className='m-5'>
       <div className='flex flex-col  mt-5'>
       <h1 className='text-2xl font-bold'>Categories</h1>
       <p className='text-gray-500 text-md'>View tasks organized by category.</p>
