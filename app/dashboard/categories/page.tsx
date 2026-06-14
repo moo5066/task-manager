@@ -1,18 +1,16 @@
 import React from 'react'
-import { IoBag } from "react-icons/io5";
-import { IoIosPeople } from "react-icons/io";
-import { FaHeart } from "react-icons/fa";
-import { RiMoneyPoundCircleFill } from "react-icons/ri";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
+
 
 import { cat1 }  from "./Catg";
 
-const Icons={
-bag:<IoBag size={20}/>,
-people:<IoIosPeople size={20}/>,
-heart:<FaHeart size={20}/>,
-money:<RiMoneyPoundCircleFill size={20}/>,
-dots:<HiOutlineDotsHorizontal size={20}/>
+
+
+const colors : Record<string, string> = {
+  blue:   "bg-blue-200 text-blue-500",
+  green:  "bg-green-200 text-green-500",
+  red:    "bg-red-200 text-red-500",
+  yellow: "bg-yellow-200 text-yellow-500",
+  gray:   "bg-gray-200 text-gray-500",
 }
 
 
@@ -31,9 +29,9 @@ const page = () => {
     {cat1.map((item,index)=>(
       <div key={index} className='bg-white p-5 border border-gray-200 shadow-lg rounded-2xl flex flex-col gap-5'>
         <div className='flex flex-row gap-1 items-center'>
-        <div className={` p-2 rounded-lg w-fit h-fit ${item === cat1[0] ? 'bg-blue-200 text-blue-500 ' : item === cat1[1] ? 'bg-green-200 text-green-500 ' : item === cat1[2] ? 'bg-yellow-200 text-yellow-500 ' : item === cat1[3] ? 'bg-red-200 text-red-500 ' : item=== cat1[4] ? 'bg-gray-200 text-gray-500 ' : ''}`}>
+        <div className={` p-2 rounded-lg w-fit h-fit ${colors[item.color]}`}>
 <span>
-  {item=== cat1[0] ? Icons.bag : item=== cat1[1] ? Icons.people : item=== cat1[2] ? Icons.heart : item=== cat1[3] ? Icons.money : item=== cat1[4] ? Icons.dots : ''}
+  {item.icon}
 </span>
           </div>
 <p>{item.title}</p>
